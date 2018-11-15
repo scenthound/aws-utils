@@ -16,8 +16,11 @@ terminate_workflow_executions() {
   for wid in $(list_open_workflow_executions)
   do
     aws swf terminate-workflow-execution --domain "$DOMAIN" --workflow-id "$wid"
+    echo "Terminating: $wid"
   done
 }
+
+trap "echo Exited!; exit;" SIGINT SIGTERM
 
 terminate_workflow_executions
 exit 0
